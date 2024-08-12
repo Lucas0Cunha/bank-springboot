@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Repository //
 public interface ClienteRepository extends JpaRepository<Cliente,Long> {
-    void deleteByCpfCnpj(String cpfCnpj);
-    Optional<Cliente> findByCpfCnpj(String cpfCnpj);
+
+
+
 }

@@ -1,18 +1,33 @@
 package com.bank.bank.models;
 
 import jakarta.persistence.*;
+// JPA é uma especificação que facilita o desenvolvimento de aplicações Java que interagem com bancos de dados relacionais
+
+//TODO PERGUNTAR SOBRE FRAMEWORK- Ferramenta para ajudar processos ex spring boot
+// TODO ESCREVER SOBRE API, REST E API RESTful
+//API biblioteca, REST-
+
 
 @Entity
-//
-@Table (name = "cliente")
-//
+// Indica que essa classe Java é uma entidade que será mapeada para uma tabela no banco de dados.
+@Table(name = "cliente")
+//permite customizar o nome da tabela, o esquema e outras características do mapeamento
+
+//Ambos tanto o Entity quanto o Tablea trabalham sempre juntos.
+
 public class Cliente {
-    @Id //
-    @GeneratedValue (strategy = GenerationType.AUTO) //
+    @Id
+    // decorator do JPA para o entendimento no banco de dados que o prox dado era o ID, a chave primaria
+
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    // O GeneratedValue define como o valor da chave primária será gerado, nesse caso automaticamente
+
     private Long id;
     private String email;
     private String nome;
-    @Column (name = "cpf_cnpj") //
+
+    @Column(name = "cpf_cnpj")
+    // Do JPA é usado para especificar mais o detalhamento da tabela do banco de dados, podendo até definir mais precisamente como: nullable = false, length = 100, unique = true...
     private String cpfCnpj;
 
     public Cliente() {
@@ -24,7 +39,7 @@ public class Cliente {
     }
 
 
-    public Cliente(String email, String name,String cpfCnpj) {
+    public Cliente(String email, String name, String cpfCnpj) {
         this.setEmail(email);
         this.setNome(name);
         this.setCpfCnpj(cpfCnpj);

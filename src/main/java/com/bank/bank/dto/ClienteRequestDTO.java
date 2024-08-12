@@ -1,4 +1,3 @@
 package com.bank.bank.dto;
 
-public record ClienteRequestDTO() {
-}
+public record ClienteRequestDTO(String nome,String email,String cpfCnpj) {}
