@@ -1,27 +1,25 @@
 package com.bank.bank.service.impl;
 
 import com.bank.bank.dto.ContaRequestDTO;
-import com.bank.bank.models.ContaCredito;
-import com.bank.bank.models.ContaPoupanca;
-import com.bank.bank.models.ContaSalario;
-import com.bank.bank.models.Contas;
+import com.bank.bank.models.*;
+import com.bank.bank.repository.ClienteDAO;
 import com.bank.bank.repository.ContaDAO;
 import com.bank.bank.service.ContaService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ContaServiceImpl implements ContaService {
 
     @Autowired //
     private ContaDAO contaRepository;
 
-    @Override
-    public void add(Contas contas) {
+    @Autowired
+    private ClienteDAO clienteDAO;
 
-        contaRepository.save(contas);
-    }
 
     @Override
     public List<Contas> findAll() {
@@ -37,9 +35,10 @@ public class ContaServiceImpl implements ContaService {
     @Transactional // Como tem mais de uma ida a base de dados precisa de um transactional
     public void update(Long id, ContaRequestDTO contaRequestDTO) {
         Contas contasGet = contaRepository.findById(id).get();
+        Cliente cliente = clienteDAO.getById(contaRequestDTO.idCliente());
         if (contasGet != null) {
             contasGet.setNumero(contaRequestDTO.numero());
-            contasGet.setCpfCnpj(contaRequestDTO.cpfCnpj());
+            contasGet.setCliente(cliente);
             contasGet.setSaldo(contaRequestDTO.saldo());
 
             contaRepository.save(contasGet);
@@ -53,18 +52,23 @@ public class ContaServiceImpl implements ContaService {
 
 
     @Override
+    @Transactional
     public void add(ContaRequestDTO contaDTO) {
         Contas c = this.contaFactory(contaDTO);
-        this.add(c);
+        Cliente cliente = clienteDAO.getById(contaDTO.idCliente());
+        contaRepository.save(c);
+
     }
 
     private Contas contaFactory(ContaRequestDTO contaDTO) {
+        Cliente cliente =new Cliente();
+
         if (contaDTO.saldo() > 200) {
-            return new ContaSalario(contaDTO.numero(), contaDTO.cpfCnpj(), contaDTO.saldo());
+            return new ContaSalario(contaDTO.numero(), cliente, contaDTO.saldo());
         } else if (contaDTO.saldo() > 100) {
-            return new ContaPoupanca(contaDTO.numero(), contaDTO.cpfCnpj(), contaDTO.saldo());
+            return new ContaPoupanca(contaDTO.numero(),cliente, contaDTO.saldo());
         } else if (contaDTO.saldo() == 0) {
-            return new ContaCredito(contaDTO.numero(), contaDTO.cpfCnpj(),0);
+            return new ContaCredito(contaDTO.numero(), cliente,0);
         }
         return null;
     }

@@ -7,7 +7,7 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 
 public interface ContaService {
-    public void add(Contas contas);
+
 
     public List<Contas> findAll();
 

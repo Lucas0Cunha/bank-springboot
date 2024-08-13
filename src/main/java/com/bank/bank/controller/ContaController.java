@@ -3,6 +3,7 @@ package com.bank.bank.controller;
 import com.bank.bank.dto.ContaRequestDTO;
 import com.bank.bank.models.Contas;
 import com.bank.bank.service.ContaService;
+import com.bank.bank.service.impl.ContaServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,14 +12,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/conta")
 public class ContaController {
-    private ContaService contaService;
+
+//
+    private ContaService contaService = new ContaServiceImpl();
 
 
     @PostMapping //
-    public ResponseEntity<String> add(@RequestBody Contas contas) {
+    public ResponseEntity<String> add(@RequestBody ContaRequestDTO contaRequestDTO) {
         // O requestBody indica que a inserção do parametro deve ser realiza no body da requisição
         // Tbm é legal saber que o Spring converte automaticamente no corpo da requisição pelo user de um JSON para um obj Java
-        contaService.add(contas);
+        contaService.add(contaRequestDTO);
         return ResponseEntity.status(201).build(); //
     }
 

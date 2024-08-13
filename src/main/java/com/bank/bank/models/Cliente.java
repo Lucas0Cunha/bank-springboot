@@ -26,7 +26,7 @@ public class Cliente {
     private String email;
     private String nome;
 
-    @Column(name = "cpf_cnpj")
+    @Column(name = "cpf_cnpj",unique = true)
     // Do JPA é usado para especificar mais o detalhamento da tabela do banco de dados, podendo até definir mais precisamente como: nullable = false, length = 100, unique = true...
     private String cpfCnpj;
 
