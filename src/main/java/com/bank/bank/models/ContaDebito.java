@@ -8,7 +8,8 @@ import jakarta.persistence.*;
 @DiscriminatorValue("contadebito")
 public class ContaDebito extends Contas{
 
-
+    public ContaDebito() {
+    }
 
     public ContaDebito(String numero, Cliente cliente, double saldo) {
         super(numero, cliente, saldo);

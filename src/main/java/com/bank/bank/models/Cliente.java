@@ -25,6 +25,7 @@ public class Cliente {
     private Long id;
     private String email;
     private String nome;
+    //todo add cidade, estado
 
     @Column(name = "cpf_cnpj",unique = true)
     // Do JPA é usado para especificar mais o detalhamento da tabela do banco de dados, podendo até definir mais precisamente como: nullable = false, length = 100, unique = true...

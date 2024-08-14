@@ -10,7 +10,8 @@ public class ContaCredito extends Contas{
 
     private double limite;
 
-
+    public ContaCredito() {
+    }
 
     private String dataValidade;
 

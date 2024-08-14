@@ -1,7 +1,10 @@
 package com.bank.bank.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import com.bank.bank.dto.ContaResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,8 +31,14 @@ public class ContaServiceImpl implements ContaService {
 
 
     @Override
-    public List<Contas> findAll() {
-        return contaRepository.findAll();
+    public List<ContaResponseDTO> findAll() {
+        List<Contas> contas = contaRepository.findAll();
+        List<ContaResponseDTO> responseDTOS = new ArrayList<>();
+        for (Contas c : contas) {
+            ContaResponseDTO responseDTO = new ContaResponseDTO(c.getSaldo(), c.getCliente().getNome());
+            responseDTOS.add(responseDTO);
+        }
+        return responseDTOS;
     }
 
     @Override
@@ -51,9 +60,15 @@ public class ContaServiceImpl implements ContaService {
         }
     }
 
+    //
     @Override
-    public Contas getById(Long id) {
-        return contaRepository.findById(id).get();
+    public ContaResponseDTO getById(Long id) {
+        Optional<Contas> contas = contaRepository.findById(id);
+        if (contas.isPresent()) {
+            ContaResponseDTO responseDTO = new ContaResponseDTO(contas.get().getSaldo(), contas.get().getCliente().getNome());
+            return responseDTO;
+        }
+        return null;
     }
 
     @Transactional
@@ -65,21 +80,17 @@ public class ContaServiceImpl implements ContaService {
     }
 
     private Contas contaFactory(ContaRequestDTO contaDTO) {
-    	Cliente cliente = clienteService.getById(contaDTO.idCliente());
+        Cliente cliente = clienteService.getById(contaDTO.idCliente());
 
         if (contaDTO.saldo() > 200) {
             return new ContaSalario(contaDTO.numero(), cliente, contaDTO.saldo());
         } else if (contaDTO.saldo() > 100) {
-            return new ContaPoupanca(contaDTO.numero(),cliente, contaDTO.saldo());
+            return new ContaPoupanca(contaDTO.numero(), cliente, contaDTO.saldo());
         } else if (contaDTO.saldo() == 0) {
-            return new ContaCredito(contaDTO.numero(), cliente,0);
+            return new ContaCredito(contaDTO.numero(), cliente, 0);
         }
         return null;
     }
-
-
-
-
 
 
 }

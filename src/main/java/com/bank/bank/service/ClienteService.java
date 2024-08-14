@@ -11,5 +11,6 @@ public interface ClienteService {
     public void delete (Long id);
     public void update (Long id, ClienteRequestDTO clienteRequestDTO);
     public Cliente getById (Long id);
+    public List<String> getAllNames();
 
 }

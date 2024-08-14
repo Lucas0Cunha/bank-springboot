@@ -30,6 +30,9 @@ public abstract class Contas {
     private Cliente cliente;
 // key
 
+    public Contas() {
+    }
+
     public Contas(String numero, Cliente cliente, Double saldo) {
         this.numero = numero;
         this.cliente = cliente;
@@ -80,6 +83,8 @@ public abstract class Contas {
                 ", cliente=" + cliente +
                 '}';
     }
+
+
 
 }
 

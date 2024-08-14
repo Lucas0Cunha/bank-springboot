@@ -12,7 +12,8 @@ public class ContaPoupanca extends Contas{
         super(numero, cliente, saldo);
     }
 
-
+    public ContaPoupanca() {
+    }
 
     public TipoConta getTipoConta(){
         return TipoConta.POUPANCA;

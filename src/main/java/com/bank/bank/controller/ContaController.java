@@ -1,10 +1,9 @@
 package com.bank.bank.controller;
 
 import com.bank.bank.dto.ContaRequestDTO;
+import com.bank.bank.dto.ContaResponseDTO;
 import com.bank.bank.models.Contas;
 import com.bank.bank.service.ContaService;
-import com.bank.bank.service.impl.ContaServiceImpl;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +14,7 @@ import java.util.List;
 @RequestMapping("/conta")
 public class ContaController {
 
-	@Autowired
+    @Autowired
     private ContaService contaService;
 
 
@@ -27,11 +26,13 @@ public class ContaController {
         return ResponseEntity.status(201).build(); //
     }
 
+
+    //
     @GetMapping("/getAll")
-    public ResponseEntity<List<Contas>> getAll() {
+    public ResponseEntity<List<ContaResponseDTO>> getAll() {
         // ResponseEntity: Classe já existente que facilita a resposta com o APIRest, me fornecendo metodos para resposta especifica fornecida pelo response, ex:ok...
 
-        List<Contas> contasList = contaService.findAll();
+        List<ContaResponseDTO> contasList = contaService.findAll();
         return ResponseEntity.ok(contasList);
     }
 
@@ -48,15 +49,21 @@ public class ContaController {
         return ResponseEntity.ok().build();
     }
 
+
+    //
     @GetMapping("/{id}")
-    public ResponseEntity<Contas> getById(@PathVariable Long id) {
-        Contas getConta = contaService.getById(id);
-        return ResponseEntity.ok(getConta);
+    public ResponseEntity<ContaResponseDTO> getById(@PathVariable Long id) {
+        ContaResponseDTO getConta = contaService.getById(id);
+        if (getConta != null) {
+            return ResponseEntity.ok(getConta);
+        }
+        return ResponseEntity.status(404).build();
     }
-
-
-
-
-
-
 }
+
+
+
+
+
+
+

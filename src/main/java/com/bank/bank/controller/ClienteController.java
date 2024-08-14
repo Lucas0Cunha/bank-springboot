@@ -52,6 +52,13 @@ public class ClienteController {
        return ResponseEntity.ok(getCliente);
     }
 
+    @GetMapping("/getAllNames")
+    public ResponseEntity <List <String>> getAllNames(){
+        List<String> nomes =clienteService.getAllNames();
+        return ResponseEntity.ok(nomes);
+    }
+
+
 // PATH VARIABLE: Valor passado na url(uri)
 // REQUEST BODY: Valor passado no body, corpo da requisição
 // REQUEST PARAM: Valor passado

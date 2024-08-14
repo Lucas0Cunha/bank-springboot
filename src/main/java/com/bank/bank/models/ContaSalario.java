@@ -10,15 +10,16 @@ import jakarta.persistence.Table;
 // Indica que essa classe Java é uma entidade que será mapeada para uma tabela no banco de dados.
 @DiscriminatorValue("contasalario")
 
-public class ContaSalario extends Contas{
+public class ContaSalario extends Contas {
     public ContaSalario(String numero, Cliente cliente, double saldo) {
         super(numero, cliente, saldo);
     }
 
+    public ContaSalario() {
+        super();
+    }
 
-
-
-    public TipoConta getTipoConta(){
+    public TipoConta getTipoConta() {
         return TipoConta.SALARIO;
     }
 }
