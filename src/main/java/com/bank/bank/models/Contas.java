@@ -15,13 +15,12 @@ import jakarta.persistence.*;
 
 public abstract class Contas {
 
-    @Column(name = "saldo")
-    private double saldo;
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
+    @Column(name = "saldo")
+    private double saldo;
 
     @Column(name = "numero", unique = true)
     private String numero;

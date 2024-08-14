@@ -4,6 +4,8 @@ import com.bank.bank.dto.ContaRequestDTO;
 import com.bank.bank.models.Contas;
 import com.bank.bank.service.ContaService;
 import com.bank.bank.service.impl.ContaServiceImpl;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,8 +15,8 @@ import java.util.List;
 @RequestMapping("/conta")
 public class ContaController {
 
-//
-    private ContaService contaService = new ContaServiceImpl();
+	@Autowired
+    private ContaService contaService;
 
 
     @PostMapping //
