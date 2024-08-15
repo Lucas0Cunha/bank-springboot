@@ -50,7 +50,6 @@ public class ContaController {
     }
 
 
-    //
     @GetMapping("/{id}")
     public ResponseEntity<ContaResponseDTO> getById(@PathVariable Long id) {
         ContaResponseDTO getConta = contaService.getById(id);
@@ -65,6 +64,8 @@ public class ContaController {
         List<String> nomes =contaService.getAllContas();
         return ResponseEntity.ok(nomes);
     }
+
+
 
 
 }

@@ -17,7 +17,11 @@ public class ClienteController {
 
     //TODO ESTUDA RESPOSTA DO SISTEMA
 
-    @PostMapping //
+    // PATH VARIABLE: Valor passado na url(uri)
+    // REQUEST BODY: Valor passado no body, corpo da requisição
+    // REQUEST PARAM: Valor passado
+
+    @PostMapping
     public ResponseEntity<String> add(@RequestBody Cliente cliente) {
         // O requestBody indica que a inserção do parametro deve ser realiza no body da requisição
         // Tbm é legal saber que o Spring converte automaticamente no corpo da requisição pelo user de um JSON para um obj Java
@@ -48,19 +52,14 @@ public class ClienteController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> getById(@PathVariable Long id) {
-       Cliente getCliente = clienteService.getById(id);
-       return ResponseEntity.ok(getCliente);
+        Cliente getCliente = clienteService.getById(id);
+        return ResponseEntity.ok(getCliente);
     }
 
     @GetMapping("/getAllNames")
-    public ResponseEntity <List <String>> getAllNames(){
-        List<String> nomes =clienteService.getAllNames();
+    public ResponseEntity<List<String>> getAllNames() {
+        List<String> nomes = clienteService.getAllNames();
         return ResponseEntity.ok(nomes);
     }
-
-
-// PATH VARIABLE: Valor passado na url(uri)
-// REQUEST BODY: Valor passado no body, corpo da requisição
-// REQUEST PARAM: Valor passado
 
 }

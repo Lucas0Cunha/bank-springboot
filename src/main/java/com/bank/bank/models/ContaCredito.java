@@ -8,6 +8,8 @@ import java.time.LocalDate;
 @Entity
 // Indica que essa classe Java é uma entidade que será mapeada para uma tabela no banco de dados.
 @DiscriminatorValue("contacredito")
+// O Discriminator serve para classe que são heranças, ele faz na tabela uma coluna escondida que substitue os valores qnd necessario na tabela mãe
+// Define o valor específico que será salvo na coluna discriminadora criada na conta mae como DiscriminatorColumn
 public class ContaCredito extends Contas{
 
     //private double limite;

@@ -23,4 +23,6 @@ public interface ContaService {
     void add(ContaRequestDTO contaDTO);
 
     public List<String> getAllContas();
+
+
 }
