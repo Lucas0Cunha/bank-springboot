@@ -3,7 +3,6 @@ package com.bank.bank.models;
 import com.bank.bank.util.TipoConta;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
 
 
 @Entity

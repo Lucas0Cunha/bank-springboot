@@ -59,6 +59,14 @@ public class ContaController {
         }
         return ResponseEntity.status(404).build();
     }
+
+    @GetMapping("/getAllContas")
+    public ResponseEntity <List <String>> getAllNames(){
+        List<String> nomes =contaService.getAllContas();
+        return ResponseEntity.ok(nomes);
+    }
+
+
 }
 
 

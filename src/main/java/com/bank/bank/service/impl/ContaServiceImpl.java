@@ -1,11 +1,13 @@
 package com.bank.bank.service.impl;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import com.bank.bank.dto.ContaResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.bank.bank.dto.ContaRequestDTO;
@@ -79,6 +81,12 @@ public class ContaServiceImpl implements ContaService {
 
     }
 
+    @Override
+    public List<String> getAllContas() {
+        return contaRepository.getAllContas();
+
+    }
+
     private Contas contaFactory(ContaRequestDTO contaDTO) {
         Cliente cliente = clienteService.getById(contaDTO.idCliente());
 
@@ -87,10 +95,15 @@ public class ContaServiceImpl implements ContaService {
         } else if (contaDTO.saldo() > 100) {
             return new ContaPoupanca(contaDTO.numero(), cliente, contaDTO.saldo());
         } else if (contaDTO.saldo() == 0) {
-            return new ContaCredito(contaDTO.numero(), cliente, 0);
+            //double limiteCartao = calcularLimite(contaDTO.saldo());
+            LocalDate dataValidade = LocalDate.now().plusYears(5);
+            return new ContaCredito(contaDTO.numero(), cliente, 0, /*limiteCartao,*/ dataValidade);
         }
         return null;
     }
 
+    /*private double calcularLimite(double saldo) {
+        return saldo * 1.5;
 
+    }*/
 }

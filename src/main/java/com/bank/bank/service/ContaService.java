@@ -21,4 +21,6 @@ public interface ContaService {
     public ContaResponseDTO getById(Long id);
 
     void add(ContaRequestDTO contaDTO);
+
+    public List<String> getAllContas();
 }

@@ -31,6 +31,7 @@ public class ClienteServiceImpl implements ClienteService {
         clienteRepository.deleteById(id);
     }
 
+
     @Override
     @Transactional // Como tem mais de uma ida a base de dados precisa de um transactional
     public void update(Long id, ClienteRequestDTO clienteRequestDTO) {
@@ -39,6 +40,7 @@ public class ClienteServiceImpl implements ClienteService {
             clienteGet.setNome(clienteRequestDTO.nome());
             clienteGet.setEmail(clienteRequestDTO.email());
             clienteGet.setCpfCnpj(clienteRequestDTO.cpfCnpj());
+            clienteGet.setEstado(clienteRequestDTO.estado());
 
             clienteRepository.save(clienteGet);
         }
@@ -50,7 +52,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public List<String> getAllNames(){
+    public List<String> getAllNames() {
         return clienteRepository.getAllNames();
     }
 

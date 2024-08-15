@@ -15,4 +15,6 @@ public interface ClienteDAO extends JpaRepository<Cliente, Long> {
     @Query (value = "SELECT c.nome FROM Cliente c", nativeQuery = true)
     List<String> getAllNames();
 
+
+
 }
