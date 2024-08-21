@@ -25,9 +25,12 @@ public class Cliente {
     private Long id;
     private String email;
     private String nome;
+
+    @Column (name = "estado")
     private String estado;
 
-    @Column(name = "cpf_cnpj",unique = true)
+
+    @Column(name = "cpf_cnpj", unique = true)
     // Do JPA é usado para especificar mais o detalhamento da tabela do banco de dados, podendo até definir mais precisamente como: nullable = false, length = 100, unique = true...
     private String cpfCnpj;
 
@@ -40,12 +43,13 @@ public class Cliente {
     }
 
 
-    public Cliente(String email, String name, String cpfCnpj, String estado) {
+    public Cliente(String email, String name, String cpfCnpj) {
         this.setEmail(email);
         this.setNome(name);
         this.setCpfCnpj(cpfCnpj);
-        this.setEstado(estado);
+
     }
+
 
     public Cliente(String name, Long id) {
         this.setNome(name);
@@ -58,7 +62,7 @@ public class Cliente {
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", nome='" + nome + '\'' +
-                ", estado='" + estado + '\'' +
+
                 ", cpfCnpj='" + cpfCnpj + '\'' +
                 '}';
     }

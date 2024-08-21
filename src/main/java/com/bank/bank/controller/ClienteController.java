@@ -2,6 +2,7 @@ package com.bank.bank.controller;
 
 import com.bank.bank.dto.ClienteRequestDTO;
 import com.bank.bank.models.Cliente;
+import com.bank.bank.models.Contas;
 import com.bank.bank.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/cliente")
 public class ClienteController {
+
     @Autowired
     private ClienteService clienteService;
 
@@ -60,6 +62,20 @@ public class ClienteController {
     public ResponseEntity<List<String>> getAllNames() {
         List<String> nomes = clienteService.getAllNames();
         return ResponseEntity.ok(nomes);
+    }
+
+
+    @GetMapping("/getInfoCliente/{id}")
+    public ResponseEntity<List<Contas>> getInfo(@PathVariable Long id) {
+        List<Contas> infos = clienteService.getInfoCliente(id);
+        return ResponseEntity.ok(infos);
+    }
+
+
+    @GetMapping("/getMontante/{id}")
+    public ResponseEntity<List<String>> getSaldoCliente(@PathVariable Long id) {
+        List<String> montantes = clienteService.getSaldoCliente(id);
+        return ResponseEntity.ok(montantes);
     }
 
 }

@@ -1,10 +1,12 @@
 package com.bank.bank.service.impl;
 
 import com.bank.bank.dto.ClienteRequestDTO;
-import com.bank.bank.models.Cliente;
+import com.bank.bank.models.*;
 import com.bank.bank.repository.ClienteDAO;
+import com.bank.bank.repository.ContaDAO;
 import com.bank.bank.service.ClienteService;
 
+import com.bank.bank.util.TipoConta;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,9 @@ import java.util.List;
 public class ClienteServiceImpl implements ClienteService {
     @Autowired //
     private ClienteDAO clienteRepository;
+
+    @Autowired
+    private ContaDAO contaRepository;
 
     @Override
     public void add(Cliente cliente) {
@@ -40,7 +45,6 @@ public class ClienteServiceImpl implements ClienteService {
             clienteGet.setNome(clienteRequestDTO.nome());
             clienteGet.setEmail(clienteRequestDTO.email());
             clienteGet.setCpfCnpj(clienteRequestDTO.cpfCnpj());
-            clienteGet.setEstado(clienteRequestDTO.estado());
 
             clienteRepository.save(clienteGet);
         }
@@ -57,4 +61,83 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
 
+    public TipoConta gettipoConta(Long id) {
+        Contas contaGet = contaRepository.findById(id).get();
+
+        if (contaGet.getSaldo() > 200) {
+            return TipoConta.SALARIO;
+        } else if (contaGet.getSaldo() > 100) {
+            return TipoConta.DEBITO;
+        } else if (contaGet.getSaldo() == 0) {
+
+            return TipoConta.CREDITO;
+        }
+        return null;
+    }
+
+    @Override
+    @Transactional // Como tem mais de uma ida a base de dados precisa de um transactional
+    public List<Contas> getInfoCliente(Long id) {//id=1
+    List<Contas> getContaType = contaRepository.getContaType(id);
+
+       /* List<Contas> contaGet = contaRepository.findAll();
+
+        List<Contas> listaContas = new ArrayList<>();
+        for (Contas contas : contaGet) {
+            //for (int i=0; i<contaGet.size(); i++)
+            if (contas.getCliente().getId().equals(id)) {
+                listaContas.add(contas);
+            }
+        }*/
+
+        return getContaType;
+    }
+
+    @Override
+    public List<String> getSaldoCliente(Long id) {
+        return List.of();
+    }
+
+
+   /* @Override
+    @Transactional // Como tem mais de uma ida a base de dados precisa de um transactional
+    public List<String> getSaldoCliente(Long id) {
+        List<String> saldoNome = new ArrayList<>();
+        Cliente clienteGet = clienteRepository.findById(id).get();
+        Contas contaGet = contaRepository.findById(id).get();
+
+        saldoNome.add(clienteGet.getNome());
+        saldoNome.add(getSaldoTotal(id));
+
+
+        return saldoNome;
+
+    }
+
+
+    /*public String getSaldoTotal(Long id) {
+        List<Double> saldos = new ArrayList<>();
+        Contas contaGet = contaRepository.findById(id).get();
+
+        ContaSalario contaSalario = contaRepository.findById(id).get();
+        ContaDebito contaDebito = contaRepository.findById(id).get();
+        ContaPoupanca contaPoupanca = contaRepository.findById(id).get();
+
+
+        if (contaSalario != null && contaSalario.getSaldo() >= 0) {
+            saldos.add(contaSalario.getSaldo());
+        }
+
+        // Adiciona o saldo da ContaDebito se for >= 0
+        if (contaDebito != null && contaDebito.getSaldo() >= 0) {
+            saldos.add(contaDebito.getSaldo());
+        }
+
+        // Adiciona o saldo da ContaPoupanca se for >= 0
+        if (contaPoupanca != null && contaPoupanca.getSaldo() >= 0) {
+            saldos.add(contaPoupanca.getSaldo());
+        }
+
+        return saldos.toString();
+    }*/
 }

@@ -28,6 +28,11 @@ public abstract class Contas {
     private String numero;
 
     @ManyToOne
+    //
+    @JoinColumn(name = "id_agencia", referencedColumnName = "id")
+    private Agencias agencias;
+
+    @ManyToOne
     // Define o relacionamento entre classes, neste caso posso ter VARIAS contas para um cliente, mas n varias clientes para um conta
     @JoinColumn(name = "id_cliente", referencedColumnName = "id")
     // O join column vem logo em seguida para estabelecer a conexão entre estas tabelas com algum fator relacionao

@@ -4,4 +4,4 @@ package com.bank.bank.dto;
 // como é um Request ent provavelmente ele demandará que passem os valores dos respectivos parametros
 // Record- uma forma de declarar a classe quando o objetivo é ter valores IMUTAVEIS, que n podem ser alterados apos a criação da classe, por exemplo:
 // Não posso adicionar parametros a esta classe sem ser através dessa classe.
-public record ClienteRequestDTO(String nome,String email,String cpfCnpj, String estado) {}
+public record ClienteRequestDTO(String nome,String email,String cpfCnpj) {}

@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Optional;
 
 import com.bank.bank.dto.ContaResponseDTO;
+import com.bank.bank.dto.ContaResponseDTOSum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.bank.bank.dto.ContaRequestDTO;
@@ -57,6 +57,7 @@ public class ContaServiceImpl implements ContaService {
             contasGet.setNumero(contaRequestDTO.numero());
             contasGet.setCliente(cliente);
             contasGet.setSaldo(contaRequestDTO.saldo());
+            //  contasGet.setLocal(contaRequestDTO.local());
 
             contaRepository.save(contasGet);
         }
@@ -76,6 +77,7 @@ public class ContaServiceImpl implements ContaService {
     @Transactional
     @Override
     public void add(ContaRequestDTO contaDTO) {
+
         Contas c = this.contaFactory(contaDTO);
         contaRepository.save(c);
 
@@ -99,8 +101,53 @@ public class ContaServiceImpl implements ContaService {
             LocalDate dataValidade = LocalDate.now().plusYears(5);
             return new ContaCredito(contaDTO.numero(), cliente, 0, /*limiteCartao,*/ dataValidade);
         }
+
         return null;
     }
+
+    @Override
+    public ContaResponseDTO getContaValue(Long clienteId) {
+        // Object recebe quaisquer valores
+        List<Object[]> lista = contaRepository.getContaValue(clienteId);
+        //Na lista de arrays, o primeiro index da lista contem um bloco de arrays vetoriais, que são uma lista propria
+        if (lista != null) {
+            String nome = lista.get(0)[0].toString(); // Converte para String
+            // neste caso o lista.get pega o primeiro index da List e o vetorial pega o primeiro valor da lista de objeto, nesse caso
+            // no getContaValue, o metodo graças a query me retorna na base de dados uma linha com 2 valores, o nome e o saldo, e é isso que é pego no index 0 e no vetor 0
+            Double valor = Double.parseDouble(lista.get(0)[1].toString()); // Converte para Double
+            // pego o saldo no vetor 2 do index 0 da lista
+            return new ContaResponseDTO(valor, nome);
+        }
+        return null;
+    }
+
+    @Override
+    public List<ContaResponseDTO> getContaValueAll() {
+        List<Object[]> lista = contaRepository.getContaValueAll();
+        List<ContaResponseDTO> listReturn = new ArrayList<>();
+        if (lista != null) {
+
+            /*for (int i = 0; i < lista.size(); i++) {
+                Object[] o = lista.get(i);
+            }
+            for (Object[] o : lista) {
+
+            }*/
+
+            lista.forEach(o -> {
+                String nome = o[0].toString(); // Converte para String
+                Double valor = Double.parseDouble(o[1].toString());
+                listReturn.add(new ContaResponseDTO(valor, nome));
+            });
+
+            return listReturn;
+        }
+        return null;
+    }
+
+
+
+
 
     /*private double calcularLimite(double saldo) {
         return saldo * 1.5;

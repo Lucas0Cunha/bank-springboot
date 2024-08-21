@@ -2,6 +2,8 @@ package com.bank.bank.service;
 
 import com.bank.bank.dto.ClienteRequestDTO;
 import com.bank.bank.models.Cliente;
+import com.bank.bank.models.Contas;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -12,6 +14,14 @@ public interface ClienteService {
     public void update (Long id, ClienteRequestDTO clienteRequestDTO);
     public Cliente getById (Long id);
     public List<String> getAllNames();
+
+
+    @Transactional
+        // Como tem mais de uma ida a base de dados precisa de um transactional
+    List<Contas> getInfoCliente(Long id);
+
+    @Transactional // Como tem mais de uma ida a base de dados precisa de um transactional
+    List<String> getSaldoCliente(Long id);
 
 
 }

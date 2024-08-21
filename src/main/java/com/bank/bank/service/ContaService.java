@@ -2,6 +2,7 @@ package com.bank.bank.service;
 
 import com.bank.bank.dto.ContaRequestDTO;
 import com.bank.bank.dto.ContaResponseDTO;
+import com.bank.bank.dto.ContaResponseDTOSum;
 import com.bank.bank.models.Contas;
 import jakarta.transaction.Transactional;
 
@@ -25,4 +26,7 @@ public interface ContaService {
     public List<String> getAllContas();
 
 
+    ContaResponseDTO getContaValue(Long clienteId);
+
+    List<ContaResponseDTO> getContaValueAll();
 }

@@ -22,6 +22,7 @@ public class ContaController {
     public ResponseEntity<String> add(@RequestBody ContaRequestDTO contaRequestDTO) {
         // O requestBody indica que a inserção do parametro deve ser realiza no body da requisição
         // Tbm é legal saber que o Spring converte automaticamente no corpo da requisição pelo user de um JSON para um obj Java
+
         contaService.add(contaRequestDTO);
         return ResponseEntity.status(201).build(); //
     }
@@ -60,12 +61,23 @@ public class ContaController {
     }
 
     @GetMapping("/getAllContas")
-    public ResponseEntity <List <String>> getAllNames(){
-        List<String> nomes =contaService.getAllContas();
+    public ResponseEntity<List<String>> getAllNames() {
+        List<String> nomes = contaService.getAllContas();
         return ResponseEntity.ok(nomes);
     }
 
 
+    @GetMapping("/getValores/{clienteId}")
+    public ResponseEntity<ContaResponseDTO> getValue(@PathVariable Long clienteId) {
+        ContaResponseDTO soma = contaService.getContaValue(clienteId);
+        return ResponseEntity.ok(soma);
+    }
+
+    @GetMapping("/getValorTotal")
+    public ResponseEntity<List<ContaResponseDTO>> getValueAll() {
+        List<ContaResponseDTO> total = contaService.getContaValueAll();
+        return ResponseEntity.ok(total);
+    }
 
 
 }

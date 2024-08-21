@@ -1,3 +1,3 @@
 package com.bank.bank.dto;
 
-public record ContaRequestDTO (Double saldo, String numero, Long idCliente) {}
+public record ContaRequestDTO (Double saldo, String numero, Long idCliente,Long idAgencia) {}
