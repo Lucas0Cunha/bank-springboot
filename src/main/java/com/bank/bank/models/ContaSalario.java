@@ -10,8 +10,8 @@ import jakarta.persistence.Entity;
 @DiscriminatorValue("contasalario")
 
 public class ContaSalario extends Contas {
-    public ContaSalario(String numero, Cliente cliente, double saldo) {
-        super(numero, cliente, saldo);
+    public ContaSalario(String numero, Cliente cliente, double saldo, Agencias clienteAgencia) {
+        super(numero, cliente, saldo, clienteAgencia);
     }
 
     public ContaSalario() {

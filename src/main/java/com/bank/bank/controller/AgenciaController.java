@@ -1,6 +1,7 @@
 package com.bank.bank.controller;
 
 import com.bank.bank.dto.AgenciaRequestDTO;
+import com.bank.bank.dto.AgenciaResponseDTO;
 import com.bank.bank.models.Agencias;
 import com.bank.bank.service.AgenciaService;
 import org.springframework.beans.factory.annotation.Autowired;

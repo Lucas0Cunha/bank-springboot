@@ -2,7 +2,7 @@ package com.bank.bank.service.impl;
 
 
 import com.bank.bank.dto.AgenciaRequestDTO;
-import com.bank.bank.dto.ClienteRequestDTO;
+import com.bank.bank.dto.AgenciaResponseDTO;
 import com.bank.bank.models.Agencias;
 import com.bank.bank.repository.AgenciasDAO;
 import com.bank.bank.service.AgenciaService;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AgenciasServiceImpl implements AgenciaService {
@@ -111,7 +112,7 @@ public class AgenciasServiceImpl implements AgenciaService {
 
     @Override
     public Agencias getById(Long id) {
-        return agenciasRepository.findById(id).get();
+       return agenciasRepository.findById(id).get();
     }
 
     @Override

@@ -11,8 +11,8 @@ public class ContaDebito extends Contas{
     public ContaDebito() {
     }
 
-    public ContaDebito(String numero, Cliente cliente, double saldo) {
-        super(numero, cliente, saldo);
+    public ContaDebito(String numero, Cliente cliente, double saldo, Agencias agencias) {
+        super(numero, cliente, saldo,agencias);
     }
 
     public TipoConta getTipoConta(){

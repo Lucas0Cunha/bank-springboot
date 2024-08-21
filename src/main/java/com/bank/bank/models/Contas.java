@@ -42,10 +42,11 @@ public abstract class Contas {
     public Contas() {
     }
 
-    public Contas(String numero, Cliente cliente, Double saldo) {
+    public Contas(String numero, Cliente cliente, Double saldo, Agencias agencias) {
         this.numero = numero;
         this.cliente = cliente;
         this.saldo = saldo;
+        this.agencias= agencias;
     }
 
     public double getSaldo() {

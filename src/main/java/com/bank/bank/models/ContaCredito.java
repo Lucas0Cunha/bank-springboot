@@ -19,9 +19,11 @@ public class ContaCredito extends Contas{
 
     private LocalDate dataValidade;
 
-    public ContaCredito(String numero, Cliente cliente, double saldo, /*double limite,*/ LocalDate dataValidade) {
-        super(numero, cliente, saldo);
+    public ContaCredito(String numero, Cliente cliente, double saldo, /*double limite,*/ LocalDate dataValidade, Agencias clienteAgencia) {
+        super(numero, cliente, saldo,clienteAgencia);
+        this.dataValidade= dataValidade;
     }
+    // data validade
 
     public LocalDate getDataValidade() {
         return dataValidade;
