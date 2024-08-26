@@ -16,6 +16,8 @@ import jakarta.persistence.*;
 //Ambos tanto o Entity quanto o Tablea trabalham sempre juntos.*/
 
 public abstract class Contas {
+// abstract  classe que não pode ser instanciada diretamente
+    //serve como uma classe pai para outras classes que herdam (ou estendem) suas características
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -46,7 +48,7 @@ public abstract class Contas {
         this.numero = numero;
         this.cliente = cliente;
         this.saldo = saldo;
-        this.agencias= agencias;
+        this.agencias = agencias;
     }
 
     public double getSaldo() {
@@ -78,6 +80,13 @@ public abstract class Contas {
         return cliente;
     }
 
+    public Agencias getAgencias() {
+        return agencias;
+    }
+
+    public void setAgencias(Agencias agencias) {
+        this.agencias = agencias;
+    }
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;

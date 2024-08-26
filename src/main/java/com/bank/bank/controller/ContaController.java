@@ -1,6 +1,7 @@
 package com.bank.bank.controller;
 
 import com.bank.bank.dto.ContaRequestDTO;
+import com.bank.bank.dto.ContaResponseAgenciaDTO;
 import com.bank.bank.dto.ContaResponseDTO;
 import com.bank.bank.models.Contas;
 import com.bank.bank.service.ContaService;
@@ -78,6 +79,13 @@ public class ContaController {
         List<ContaResponseDTO> total = contaService.getContaValueAll();
         return ResponseEntity.ok(total);
     }
+
+    @GetMapping("/getContasByAgencia/{agenciaId}")
+    public ResponseEntity<List<ContaResponseAgenciaDTO>> getContasByAgencia(@PathVariable Long agenciaId) {
+        List<ContaResponseAgenciaDTO> total = contaService.getContasByAgencia(agenciaId);
+        return ResponseEntity.ok(total);
+    }
+
 
 
 }

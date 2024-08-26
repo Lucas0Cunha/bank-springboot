@@ -1,6 +1,6 @@
 package com.bank.bank.service.impl;
 
-import com.bank.bank.dto.ClienteRequestDTO;
+import com.bank.bank.dto.*;
 import com.bank.bank.models.*;
 import com.bank.bank.repository.ClienteDAO;
 import com.bank.bank.repository.ContaDAO;
@@ -11,6 +11,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service //
@@ -55,12 +56,66 @@ public class ClienteServiceImpl implements ClienteService {
         return clienteRepository.findById(id).get();
     }
 
+    @Override
+    public List<ClienteResponseDTOContas> getInfoClienteConta(Long idCliente){
+        List<Object[]> lista = clienteRepository.getInfoClienteConta(idCliente);
+        List<ClienteResponseDTOContas> listReturn = new ArrayList<>();
+        if (lista != null) {
+            lista.forEach(o -> {
+                String nome = o[0].toString();
+                String nomeAgencia = o[1].toString(); // Converte para String
+                String estado = o[2].toString();
+                listReturn.add(new ClienteResponseDTOContas(nome, nomeAgencia,estado));
+            });
+
+            return listReturn;
+        }
+        return null;
+    }
+
+    @Override
+    public List<ClienteRequestDTOCredito> getInfoClienteCredito() {
+        List<Object[]> lista = clienteRepository.getInfoClienteCredito();
+        List<ClienteRequestDTOCredito> listReturn = new ArrayList<>();
+        if (lista != null) {
+            lista.forEach(o -> {
+                String nome = o[0].toString();
+                String tipoConta = o[1].toString(); // Converte para String
+
+                listReturn.add(new ClienteRequestDTOCredito(nome,tipoConta));
+            });
+
+            return listReturn;
+        }
+        return null;
+    }
+
+
+    @Override
+    public List<ClienteRequestDTOLocal> getInfoClienteLocal() {
+        List<Object[]> lista = clienteRepository.getInfoClienteLocal();
+        List<ClienteRequestDTOLocal> listReturn = new ArrayList<>();
+        if (lista != null) {
+            lista.forEach(o -> {
+                String nome = o[0].toString();
+                String estadoCliente = o[1].toString();
+                String estadoAgencia = o[2].toString();
+                String nomeAgencia = o[3].toString();
+                listReturn.add(new ClienteRequestDTOLocal(nome,estadoCliente,estadoAgencia,nomeAgencia));
+            });
+
+            return listReturn;
+        }
+        return null;
+    }
 
 
     @Override
     public List<String> getAllNames() {
         return clienteRepository.getAllNames();
     }
+
+
 
 
     public TipoConta gettipoConta(Long id) {

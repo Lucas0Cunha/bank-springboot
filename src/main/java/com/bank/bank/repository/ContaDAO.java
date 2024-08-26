@@ -1,6 +1,7 @@
 package com.bank.bank.repository;
 
 
+import com.bank.bank.dto.ContaResponseAgenciaDTO;
 import com.bank.bank.models.Contas;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -25,4 +26,11 @@ public interface ContaDAO extends JpaRepository<Contas, Long> {
 
     @Query(value = "SELECT cli.nome, SUM(c.saldo) FROM cliente cli INNER JOIN contas c ON cli.id= c.id_cliente GROUP BY cli.id", nativeQuery = true)
     List<Object[]> getContaValueAll();
+
+
+    @Query(value = "SELECT contas.id,contas.numero,contas.id_agencia,contas.tipo_conta, agencia.nome_agencia FROM contas INNER JOIN agencia ON agencia.id= contas.id_agencia WHERE contas.id_agencia=:agenciaId",nativeQuery = true)
+    List<Object[]> getContasByAgencia(@Param("agenciaId") Long agenciaId);
+
+
+
 }

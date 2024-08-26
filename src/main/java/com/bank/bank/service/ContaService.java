@@ -1,7 +1,9 @@
 package com.bank.bank.service;
 
 import com.bank.bank.dto.ContaRequestDTO;
+import com.bank.bank.dto.ContaResponseAgenciaDTO;
 import com.bank.bank.dto.ContaResponseDTO;
+
 import jakarta.transaction.Transactional;
 
 import java.util.List;
@@ -27,4 +29,6 @@ public interface ContaService {
     ContaResponseDTO getContaValue(Long clienteId);
 
     List<ContaResponseDTO> getContaValueAll();
+
+    List<ContaResponseAgenciaDTO> getContasByAgencia(Long agenciaId);
 }

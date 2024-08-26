@@ -1,6 +1,9 @@
 package com.bank.bank.controller;
 
 import com.bank.bank.dto.ClienteRequestDTO;
+import com.bank.bank.dto.ClienteRequestDTOCredito;
+import com.bank.bank.dto.ClienteRequestDTOLocal;
+import com.bank.bank.dto.ClienteResponseDTOContas;
 import com.bank.bank.models.Cliente;
 import com.bank.bank.models.Contas;
 import com.bank.bank.service.ClienteService;
@@ -76,6 +79,24 @@ public class ClienteController {
     public ResponseEntity<List<String>> getSaldoCliente(@PathVariable Long id) {
         List<String> montantes = clienteService.getSaldoCliente(id);
         return ResponseEntity.ok(montantes);
+    }
+
+    @GetMapping("/getInfos/{id}")
+    public ResponseEntity<List<ClienteResponseDTOContas>> getSaldoClienteConta(@PathVariable Long id) {
+        List<ClienteResponseDTOContas> infos = clienteService.getInfoClienteConta(id);
+        return ResponseEntity.ok(infos);
+    }
+
+    @GetMapping("/getInfoCredito")
+    public ResponseEntity<List<ClienteRequestDTOCredito>> getInfoClienteCredito() {
+        List<ClienteRequestDTOCredito> infos = clienteService.getInfoClienteCredito();
+        return ResponseEntity.ok(infos);
+    }
+
+    @GetMapping("/getInfoClienteLocal")
+    public ResponseEntity<List<ClienteRequestDTOLocal>> getInfoClienteLocal(){
+        List<ClienteRequestDTOLocal> infos = clienteService.getInfoClienteLocal();
+        return ResponseEntity.ok(infos);
     }
 
 }

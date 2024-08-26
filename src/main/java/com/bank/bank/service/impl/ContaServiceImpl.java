@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.bank.bank.dto.ContaResponseAgenciaDTO;
 import com.bank.bank.dto.ContaResponseDTO;
 import com.bank.bank.models.*;
 import com.bank.bank.service.AgenciaService;
@@ -52,11 +53,13 @@ public class ContaServiceImpl implements ContaService {
     public void update(Long id, ContaRequestDTO contaRequestDTO) {
         Contas contasGet = contaRepository.findById(id).get();
         Cliente cliente = clienteService.getById(contaRequestDTO.idCliente());
+        Agencias agencias = agenciaService.getById(contaRequestDTO.idAgencia());
+        //ATENÇÃO, incongruencia ao tentar adicionar idAgencias para clientes que já possuem seus estados cadastrados
         if (contasGet != null) {
             contasGet.setNumero(contaRequestDTO.numero());
             contasGet.setCliente(cliente);
             contasGet.setSaldo(contaRequestDTO.saldo());
-            //  contasGet.setLocal(contaRequestDTO.local());
+            contasGet.setAgencias(agencias);
 
             contaRepository.save(contasGet);
         }
@@ -95,13 +98,13 @@ public class ContaServiceImpl implements ContaService {
 
 
         if (contaDTO.saldo() > 200) {
-            return new ContaSalario(contaDTO.numero(), cliente, contaDTO.saldo(),agencias);
+            return new ContaSalario(contaDTO.numero(), cliente, contaDTO.saldo(), agencias);
         } else if (contaDTO.saldo() > 100) {
-            return new ContaPoupanca(contaDTO.numero(), cliente, contaDTO.saldo(),agencias);
+            return new ContaPoupanca(contaDTO.numero(), cliente, contaDTO.saldo(), agencias);
         } else if (contaDTO.saldo() == 0) {
             //double limiteCartao = calcularLimite(contaDTO.saldo());
             LocalDate dataValidade = LocalDate.now().plusYears(5);
-            return new ContaCredito(contaDTO.numero(), cliente, 0, /*limiteCartao,*/ dataValidade,agencias);
+            return new ContaCredito(contaDTO.numero(), cliente, 0, /*limiteCartao,*/ dataValidade, agencias);
         }
 
         return null;
@@ -146,6 +149,27 @@ public class ContaServiceImpl implements ContaService {
         }
         return null;
     }
+
+    //TODO PERGUNTAR SOBRE BUG DE DESSE CASO, O PQ DELE ACONTECER
+    @Override
+    public List<ContaResponseAgenciaDTO> getContasByAgencia(Long agenciaId) {
+        List<Object[]> lista = contaRepository.getContasByAgencia(agenciaId);
+        List<ContaResponseAgenciaDTO> listReturn = new ArrayList<>();
+        if (lista != null) {
+            lista.forEach(o -> {
+                Long agencia = Long.parseLong(o[0].toString());
+                String nomeAgencia = o[4].toString(); // Converte para String
+                Long numero = Long.parseLong(o[1].toString());
+                listReturn.add(new ContaResponseAgenciaDTO(agencia, nomeAgencia,numero));
+            });
+
+            return listReturn;
+        }
+        return null;
+    }
+
+
+
 
 
 
