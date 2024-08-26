@@ -27,6 +27,7 @@ public class User implements UserDetails{
 	private String login;
 	private String password;
 	@Enumerated (EnumType.STRING)
+    // define q é um enum
 	private UserRole userRole;
 	
 	public User () {
@@ -45,6 +46,8 @@ public class User implements UserDetails{
         if(this.userRole == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
         else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
+    // Busca o tipo de autorização, se é nesse caso, um Admin ou user
+
     @Override
     public String getPassword() {
         return password;
@@ -53,6 +56,10 @@ public class User implements UserDetails{
     @Override
     public String getUsername() {
         return login;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override
