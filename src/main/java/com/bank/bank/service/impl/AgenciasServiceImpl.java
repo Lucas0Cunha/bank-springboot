@@ -3,6 +3,8 @@ package com.bank.bank.service.impl;
 
 import com.bank.bank.dto.AgenciaRequestDTO;
 import com.bank.bank.dto.AgenciaResponseDTO;
+import com.bank.bank.exceptions.ArgumentoMissedException;
+import com.bank.bank.exceptions.ListaVaziaException;
 import com.bank.bank.models.Agencias;
 import com.bank.bank.repository.AgenciasDAO;
 import com.bank.bank.service.AgenciaService;
@@ -81,6 +83,8 @@ public class AgenciasServiceImpl implements AgenciaService {
             agencias.setNomeAgencia("Aracaju");
         } else if (estado.equalsIgnoreCase("Tocantins")) {
             agencias.setNomeAgencia("Palmas");
+        }else if (estado.isEmpty()){
+            throw new ArgumentoMissedException();
         }
 
         agenciasRepository.save(agencias);
@@ -117,7 +121,10 @@ public class AgenciasServiceImpl implements AgenciaService {
 
     @Override
     public List<String> getAllNames() {
-        return agenciasRepository.getAll();
+        if (agenciasRepository.getAllNames().isEmpty()){
+            throw new ListaVaziaException();
+        }
+        return agenciasRepository.getAllNames();
     }
 
 

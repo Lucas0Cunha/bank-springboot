@@ -7,6 +7,8 @@ import java.util.Optional;
 
 import com.bank.bank.dto.ContaResponseAgenciaDTO;
 import com.bank.bank.dto.ContaResponseDTO;
+import com.bank.bank.exceptions.ListaVaziaException;
+import com.bank.bank.exceptions.ValorNaoExisteException;
 import com.bank.bank.models.*;
 import com.bank.bank.service.AgenciaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,9 @@ public class ContaServiceImpl implements ContaService {
             ContaResponseDTO responseDTO = new ContaResponseDTO(c.getSaldo(), c.getCliente().getNome());
             responseDTOS.add(responseDTO);
         }
+        if (responseDTOS.isEmpty()) {
+            throw new ListaVaziaException();
+        }
         return responseDTOS;
     }
 
@@ -55,20 +60,26 @@ public class ContaServiceImpl implements ContaService {
         Cliente cliente = clienteService.getById(contaRequestDTO.idCliente());
         Agencias agencias = agenciaService.getById(contaRequestDTO.idAgencia());
         //ATENÇÃO, incongruencia ao tentar adicionar idAgencias para clientes que já possuem seus estados cadastrados
-        if (contasGet != null) {
-            contasGet.setNumero(contaRequestDTO.numero());
-            contasGet.setCliente(cliente);
-            contasGet.setSaldo(contaRequestDTO.saldo());
-            contasGet.setAgencias(agencias);
-
-            contaRepository.save(contasGet);
+        if (contasGet == null){
+            throw new ValorNaoExisteException();
         }
+            if (contasGet != null) {
+                contasGet.setNumero(contaRequestDTO.numero());
+                contasGet.setCliente(cliente);
+                contasGet.setSaldo(contaRequestDTO.saldo());
+                contasGet.setAgencias(agencias);
+
+                contaRepository.save(contasGet);
+            }
     }
 
     //
     @Override
     public ContaResponseDTO getById(Long id) {
         Optional<Contas> contas = contaRepository.findById(id);
+        if (contas.isEmpty()){
+            throw new ValorNaoExisteException();
+        }
         if (contas.isPresent()) {
             ContaResponseDTO responseDTO = new ContaResponseDTO(contas.get().getSaldo(), contas.get().getCliente().getNome());
             return responseDTO;
@@ -115,6 +126,9 @@ public class ContaServiceImpl implements ContaService {
         // Object recebe quaisquer valores
         List<Object[]> lista = contaRepository.getContaValue(clienteId);
         //Na lista de arrays, o primeiro index da lista contem um bloco de arrays vetoriais, que são uma lista propria
+        if (lista == null){
+            throw new ValorNaoExisteException();
+        }
         if (lista != null) {
             String nome = lista.get(0)[0].toString(); // Converte para String
             // neste caso o lista.get pega o primeiro index da List e o vetorial pega o primeiro valor da lista de objeto, nesse caso
@@ -160,7 +174,7 @@ public class ContaServiceImpl implements ContaService {
                 Long agencia = Long.parseLong(o[0].toString());
                 String nomeAgencia = o[4].toString(); // Converte para String
                 Long numero = Long.parseLong(o[1].toString());
-                listReturn.add(new ContaResponseAgenciaDTO(agencia, nomeAgencia,numero));
+                listReturn.add(new ContaResponseAgenciaDTO(agencia, nomeAgencia, numero));
             });
 
             return listReturn;

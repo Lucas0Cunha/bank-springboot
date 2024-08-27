@@ -1,6 +1,8 @@
 package com.bank.bank.service.impl;
 
 import com.bank.bank.dto.*;
+import com.bank.bank.exceptions.ListaVaziaException;
+import com.bank.bank.exceptions.ValorNaoExisteException;
 import com.bank.bank.models.*;
 import com.bank.bank.repository.ClienteDAO;
 import com.bank.bank.repository.ContaDAO;
@@ -42,6 +44,9 @@ public class ClienteServiceImpl implements ClienteService {
     @Transactional // Como tem mais de uma ida a base de dados precisa de um transactional
     public void update(Long id, ClienteRequestDTO clienteRequestDTO) {
         Cliente clienteGet = clienteRepository.findById(id).get();
+        if (clienteGet == null) {
+            throw new ValorNaoExisteException();
+        }
         if (clienteGet != null) {
             clienteGet.setNome(clienteRequestDTO.nome());
             clienteGet.setEmail(clienteRequestDTO.email());
@@ -57,15 +62,18 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public List<ClienteResponseDTOContas> getInfoClienteConta(Long idCliente){
+    public List<ClienteResponseDTOContas> getInfoClienteConta(Long idCliente) {
         List<Object[]> lista = clienteRepository.getInfoClienteConta(idCliente);
         List<ClienteResponseDTOContas> listReturn = new ArrayList<>();
+        if (lista == null) {
+            throw new ValorNaoExisteException();
+        }
         if (lista != null) {
             lista.forEach(o -> {
                 String nome = o[0].toString();
                 String nomeAgencia = o[1].toString(); // Converte para String
                 String estado = o[2].toString();
-                listReturn.add(new ClienteResponseDTOContas(nome, nomeAgencia,estado));
+                listReturn.add(new ClienteResponseDTOContas(nome, nomeAgencia, estado));
             });
 
             return listReturn;
@@ -77,12 +85,15 @@ public class ClienteServiceImpl implements ClienteService {
     public List<ClienteRequestDTOCredito> getInfoClienteCredito() {
         List<Object[]> lista = clienteRepository.getInfoClienteCredito();
         List<ClienteRequestDTOCredito> listReturn = new ArrayList<>();
+        if (lista == null) {
+            throw new ValorNaoExisteException();
+        }
         if (lista != null) {
             lista.forEach(o -> {
                 String nome = o[0].toString();
                 String tipoConta = o[1].toString(); // Converte para String
 
-                listReturn.add(new ClienteRequestDTOCredito(nome,tipoConta));
+                listReturn.add(new ClienteRequestDTOCredito(nome, tipoConta));
             });
 
             return listReturn;
@@ -95,13 +106,16 @@ public class ClienteServiceImpl implements ClienteService {
     public List<ClienteRequestDTOLocal> getInfoClienteLocal() {
         List<Object[]> lista = clienteRepository.getInfoClienteLocal();
         List<ClienteRequestDTOLocal> listReturn = new ArrayList<>();
+        if (lista == null) {
+            throw new ValorNaoExisteException();
+        }
         if (lista != null) {
             lista.forEach(o -> {
                 String nome = o[0].toString();
                 String estadoCliente = o[1].toString();
                 String estadoAgencia = o[2].toString();
                 String nomeAgencia = o[3].toString();
-                listReturn.add(new ClienteRequestDTOLocal(nome,estadoCliente,estadoAgencia,nomeAgencia));
+                listReturn.add(new ClienteRequestDTOLocal(nome, estadoCliente, estadoAgencia, nomeAgencia));
             });
 
             return listReturn;
@@ -112,10 +126,12 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public List<String> getAllNames() {
+        if (clienteRepository.getAllNames().isEmpty()) {
+            throw new ListaVaziaException();
+        }
+
         return clienteRepository.getAllNames();
     }
-
-
 
 
     public TipoConta gettipoConta(Long id) {
@@ -135,8 +151,10 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     @Transactional // Como tem mais de uma ida a base de dados precisa de um transactional
     public List<Contas> getInfoCliente(Long id) {//id=1
-    List<Contas> getContaType = contaRepository.getContaType(id);
-
+        List<Contas> getContaType = contaRepository.getContaType(id);
+        if (getContaType.isEmpty()) {
+            throw new ValorNaoExisteException();
+        }
        /* List<Contas> contaGet = contaRepository.findAll();
 
         List<Contas> listaContas = new ArrayList<>();
@@ -150,13 +168,8 @@ public class ClienteServiceImpl implements ClienteService {
         return getContaType;
     }
 
+
     @Override
-    public List<String> getSaldoCliente(Long id) {
-        return List.of();
-    }
-
-
-   /* @Override
     @Transactional // Como tem mais de uma ida a base de dados precisa de um transactional
     public List<String> getSaldoCliente(Long id) {
         List<String> saldoNome = new ArrayList<>();
@@ -164,8 +177,11 @@ public class ClienteServiceImpl implements ClienteService {
         Contas contaGet = contaRepository.findById(id).get();
 
         saldoNome.add(clienteGet.getNome());
-        saldoNome.add(getSaldoTotal(id));
+        saldoNome.add(String.valueOf(contaGet.getSaldo()));
 
+        if (saldoNome.isEmpty()){
+            throw new ValorNaoExisteException();
+        }
 
         return saldoNome;
 

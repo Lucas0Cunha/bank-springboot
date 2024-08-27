@@ -11,5 +11,5 @@ import java.util.List;
 public interface AgenciasDAO extends JpaRepository<Agencias, Long> {
 
     @Query(value = "SELECT a.nomeAgencia FROM Agencias a", nativeQuery = true)
-    List<String> getAll();
+    List<String> getAllNames();
 }
