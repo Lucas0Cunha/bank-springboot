@@ -25,3 +25,17 @@ services:
       PMA_PASSWORD: admin
     ports:
      - '8081:80'
+
+  springboot-app:
+    image: bank_springboot
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/bank
+      SPRING_DATASOURCE_USERNAME: bank_user
+      SPRING_DATASOURCE_PASSWORD: admin
+    depends_on:
+      - database
