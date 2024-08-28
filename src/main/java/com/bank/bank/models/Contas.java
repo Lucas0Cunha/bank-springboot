@@ -1,5 +1,6 @@
 package com.bank.bank.models;
 
+import com.bank.bank.dto.ContaTestDTO;
 import jakarta.persistence.*;
 
 @Entity
@@ -42,6 +43,14 @@ public abstract class Contas {
 // key
 
     public Contas() {
+    }
+
+    public Contas(ContaTestDTO contaTestDTO) {
+        this.id = contaTestDTO.id();
+        this.saldo = contaTestDTO.saldo();
+        this.numero = contaTestDTO.numero();
+        this.agencias = contaTestDTO.agencias();
+        this.cliente = contaTestDTO.cliente();
     }
 
     public Contas(String numero, Cliente cliente, Double saldo, Agencias agencias) {

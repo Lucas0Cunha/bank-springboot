@@ -1,5 +1,6 @@
 package com.bank.bank.models;
 
+import com.bank.bank.dto.ClienteTestDTO;
 import jakarta.persistence.*;
 // JPA é uma especificação que facilita o desenvolvimento de aplicações Java que interagem com bancos de dados relacionais
 
@@ -26,7 +27,7 @@ public class Cliente {
     private String email;
     private String nome;
 
-    @Column (name = "estado")
+    @Column(name = "estado")
     private String estado;
 
 
@@ -55,6 +56,15 @@ public class Cliente {
         this.setNome(name);
         this.setId(id);
     }
+
+    public Cliente(ClienteTestDTO clienteTestDTO) {
+        this.nome = clienteTestDTO.nome();
+        this.id = clienteTestDTO.id();
+        this.email = clienteTestDTO.email();
+        this.cpfCnpj = clienteTestDTO.cpfcnpj();
+        this.estado = clienteTestDTO.estado();
+    }
+
 
     @Override
     public String toString() {

@@ -1,6 +1,6 @@
 package com.bank.bank.repository;
 
-import com.bank.bank.dto.AgenciaDTO;
+import com.bank.bank.dto.AgenciaTestDTO;
 import static org.assertj.core.api.Assertions.assertThat;
 import com.bank.bank.models.Agencias;
 import jakarta.persistence.EntityManager;
@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -24,7 +25,7 @@ class AgenciasDAOTest {
     @Autowired
     AgenciasDAO agenciasrepository;
 
-    private Agencias createAgencia(AgenciaDTO agenciaDTO){
+    private Agencias createAgencia(AgenciaTestDTO agenciaTestDTO){
     Agencias newAgencia = new Agencias();
     this.entityManager.persist(newAgencia);
     return newAgencia;
@@ -34,11 +35,11 @@ class AgenciasDAOTest {
     @Test
     @DisplayName("Should return successfully from DB")
     void getAllNames() {
-        AgenciaDTO agenciaDTO = new AgenciaDTO(1L,"Bahia","Salvador");
-        this.createAgencia(agenciaDTO);
-        Optional<Agencias>getAllNames = this.agenciasrepository.findById(1L);
+        AgenciaTestDTO agenciaTestDTO = new AgenciaTestDTO(1L,"Bahia","Salvador");
+        this.createAgencia(agenciaTestDTO);
+        List<String> getAllNames = this.agenciasrepository.getAllNames();
 
-        assertThat(getAllNames.isPresent()).isTrue();
+        assertThat(getAllNames.isEmpty()).isFalse();
 
     }
 
@@ -46,9 +47,9 @@ class AgenciasDAOTest {
     @Test
     @DisplayName("Should not return successfully from DB")
     void getAllNames2() {
-        AgenciaDTO agenciaDTO = new AgenciaDTO(1L,"Bahia","Salvador");
+        AgenciaTestDTO agenciaTestDTO = new AgenciaTestDTO(1L,"Bahia","Salvador");
 
-        Optional<Agencias>getAllNames = this.agenciasrepository.findById(1L);
+        List<String> getAllNames = this.agenciasrepository.getAllNames();
 
         assertThat(getAllNames.isEmpty()).isTrue();
 
