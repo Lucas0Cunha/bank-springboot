@@ -3,7 +3,7 @@ package com.bank.bank.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "agencia")
+@Table(name = "agencias")
 public class Agencias {
 
     @Id

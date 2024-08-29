@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface AgenciasDAO extends JpaRepository<Agencias, Long> {
 
-    @Query(value = "SELECT a.nomeAgencia FROM Agencias a", nativeQuery = true)
+    @Query(value = "SELECT a.nome_agencia FROM agencias a", nativeQuery = true)
     List<String> getAllNames();
 }
