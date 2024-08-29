@@ -26,7 +26,7 @@ class ClienteDAOTest {
 
     private Cliente createCliente(ClienteTestDTO clienteTestDTO) {
         Cliente newCliente = new Cliente(clienteTestDTO);
-        this.entityManager.persist(newCliente);
+        this.clienteRepository.save(newCliente);
 
         return newCliente;
     }
