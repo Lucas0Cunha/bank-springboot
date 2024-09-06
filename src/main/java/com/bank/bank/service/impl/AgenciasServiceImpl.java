@@ -2,7 +2,7 @@ package com.bank.bank.service.impl;
 
 
 import com.bank.bank.dto.AgenciaRequestDTO;
-import com.bank.bank.dto.AgenciaResponseDTO;
+
 import com.bank.bank.exceptions.ArgumentoMissedException;
 import com.bank.bank.exceptions.ListaVaziaException;
 import com.bank.bank.models.Agencias;
@@ -13,8 +13,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+
 
 @Service
 public class AgenciasServiceImpl implements AgenciaService {
@@ -22,73 +24,57 @@ public class AgenciasServiceImpl implements AgenciaService {
     @Autowired //
     private AgenciasDAO agenciasRepository;
 
+
+    private static final Map<String, String> estadoParaCidade = new HashMap<>();
+
+    static {
+        estadoParaCidade.put("São Paulo", "São Paulo");
+        estadoParaCidade.put("Rio de Janeiro", "Rio de Janeiro");
+        estadoParaCidade.put("Acre", "Rio Branco");
+        estadoParaCidade.put("Alagoas", "Maceió");
+        estadoParaCidade.put("Amapá", "Macapá");
+        estadoParaCidade.put("Amazonas", "Manaus");
+        estadoParaCidade.put("Bahia", "Salvador");
+        estadoParaCidade.put("Ceará", "Fortaleza");
+        estadoParaCidade.put("Distrito Federal", "Brasília");
+        estadoParaCidade.put("Espírito Santo", "Vitória");
+        estadoParaCidade.put("Goiás", "Goiânia");
+        estadoParaCidade.put("Maranhão", "São Luís");
+        estadoParaCidade.put("Mato Grosso", "Cuiabá");
+        estadoParaCidade.put("Mato Grosso do Sul", "Campo Grande");
+        estadoParaCidade.put("Minas Gerais", "Belo Horizonte");
+        estadoParaCidade.put("Pará", "Belém");
+        estadoParaCidade.put("Paraíba", "João Pessoa");
+        estadoParaCidade.put("Paraná", "Curitiba");
+        estadoParaCidade.put("Pernambuco", "Recife");
+        estadoParaCidade.put("Piauí", "Teresina");
+        estadoParaCidade.put("Rio Grande do Norte", "Natal");
+        estadoParaCidade.put("Rio Grande do Sul", "Porto Alegre");
+        estadoParaCidade.put("Rondônia", "Porto Velho");
+        estadoParaCidade.put("Roraima", "Boa Vista");
+        estadoParaCidade.put("Santa Catarina", "Florianópolis");
+        estadoParaCidade.put("Sergipe", "Aracaju");
+        estadoParaCidade.put("Tocantins", "Palmas");
+    }
+
     @Override
     public void add(Agencias agencias) {
-
-
         String estado = agencias.getEstado();
 
-        if (estado.equalsIgnoreCase("São Paulo")) {
-            agencias.setNomeAgencia("São Paulo");
-
-        } else if (estado.equalsIgnoreCase("Rio de Janeiro")) {
-            agencias.setNomeAgencia("Rio de Janeiro");
-        } else if (estado.equalsIgnoreCase("Acre")) {
-            agencias.setNomeAgencia("Rio Branco");
-        } else if (estado.equalsIgnoreCase("Alagoas")) {
-            agencias.setNomeAgencia("Maceió");
-        } else if (estado.equalsIgnoreCase("Amapá")) {
-            agencias.setNomeAgencia("Macapá");
-        } else if (estado.equalsIgnoreCase("Amazonas")) {
-            agencias.setNomeAgencia("Manaus");
-        } else if (estado.equalsIgnoreCase("Bahia")) {
-            agencias.setNomeAgencia("Salvador");
-        } else if (estado.equalsIgnoreCase("Ceará")) {
-            agencias.setNomeAgencia("Fortaleza");
-        } else if (estado.equalsIgnoreCase("Distrito Federal")) {
-            agencias.setNomeAgencia("Brasília");
-        } else if (estado.equalsIgnoreCase("Espírito Santo")) {
-            agencias.setNomeAgencia("Vitória");
-        } else if (estado.equalsIgnoreCase("Goiás")) {
-            agencias.setNomeAgencia("Goiânia");
-        } else if (estado.equalsIgnoreCase("Maranhão")) {
-            agencias.setNomeAgencia("São Luís");
-        } else if (estado.equalsIgnoreCase("Mato Grosso")) {
-            agencias.setNomeAgencia("Cuiabá");
-        } else if (estado.equalsIgnoreCase("Mato Grosso do Sul")) {
-            agencias.setNomeAgencia("Campo Grande");
-        } else if (estado.equalsIgnoreCase("Minas Gerais")) {
-            agencias.setNomeAgencia("Belo Horizonte");
-        } else if (estado.equalsIgnoreCase("Pará")) {
-            agencias.setNomeAgencia("Belém");
-        } else if (estado.equalsIgnoreCase("Paraíba")) {
-            agencias.setNomeAgencia("João Pessoa");
-        } else if (estado.equalsIgnoreCase("Paraná")) {
-            agencias.setNomeAgencia("Curitiba");
-        } else if (estado.equalsIgnoreCase("Pernambuco")) {
-            agencias.setNomeAgencia("Recife");
-        } else if (estado.equalsIgnoreCase("Piauí")) {
-            agencias.setNomeAgencia("Teresina");
-        } else if (estado.equalsIgnoreCase("Rio Grande do Norte")) {
-            agencias.setNomeAgencia("Natal");
-        } else if (estado.equalsIgnoreCase("Rio Grande do Sul")) {
-            agencias.setNomeAgencia("Porto Alegre");
-        } else if (estado.equalsIgnoreCase("Rondônia")) {
-            agencias.setNomeAgencia("Porto Velho");
-        } else if (estado.equalsIgnoreCase("Roraima")) {
-            agencias.setNomeAgencia("Boa Vista");
-        } else if (estado.equalsIgnoreCase("Santa Catarina")) {
-            agencias.setNomeAgencia("Florianópolis");
-        } else if (estado.equalsIgnoreCase("Sergipe")) {
-            agencias.setNomeAgencia("Aracaju");
-        } else if (estado.equalsIgnoreCase("Tocantins")) {
-            agencias.setNomeAgencia("Palmas");
-        }else if (estado.isEmpty()){
+        if (estado.isEmpty()) {
             throw new ArgumentoMissedException();
         }
 
+        String cidade = estadoParaCidade.get(estado);
+
+        if (cidade == null) {
+            throw new IllegalArgumentException("Estado não reconhecido: " + estado);
+        }
+
+        agencias.setNomeAgencia(cidade);
         agenciasRepository.save(agencias);
     }
+
 
 
     @Override

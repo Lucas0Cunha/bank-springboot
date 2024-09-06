@@ -18,7 +18,7 @@ public interface ContaDAO extends JpaRepository<Contas, Long> {
             "INNER JOIN contas ON cliente.id = contas.id_cliente", nativeQuery = true)
     List<String> getAllContas();
 
-    @Query(value = "SELECT c.* FROM cliente INNER JOIN contas c ON cliente.id= c.id_cliente WHERE cliente.id = :clienteId", nativeQuery = true)
+    @Query(value = "SELECT c.* FROM contas c WHERE c.id_cliente = :clienteId", nativeQuery = true)
     List<Contas> getContaType(@Param("clienteId") Long clienteId);
 
     @Query(value = "SELECT cli.nome, SUM(c.saldo) FROM cliente cli INNER JOIN contas c ON cli.id= c.id_cliente WHERE cli.id = :clienteId  GROUP BY cli.id", nativeQuery = true)
@@ -28,7 +28,7 @@ public interface ContaDAO extends JpaRepository<Contas, Long> {
     List<Object[]> getContaValueAll();
 
 
-    @Query(value = "SELECT contas.id,contas.numero,contas.id_agencia,contas.tipo_conta, agencia.nome_agencia FROM contas INNER JOIN agencia ON agencia.id= contas.id_agencia WHERE contas.id_agencia=:agenciaId",nativeQuery = true)
+    @Query(value = "SELECT contas.id,contas.numero,contas.id_agencia,contas.tipo_conta, agencias.nome_agencia FROM contas INNER JOIN agencias ON agencias.id= contas.id_agencia WHERE contas.id_agencia=:agenciaId",nativeQuery = true)
     List<Object[]> getContasByAgencia(@Param("agenciaId") Long agenciaId);
 
 

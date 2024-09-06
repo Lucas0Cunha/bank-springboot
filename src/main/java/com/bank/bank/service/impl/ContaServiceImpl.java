@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import com.bank.bank.dto.ContaResponseAgenciaDTO;
 import com.bank.bank.dto.ContaResponseDTO;
+import com.bank.bank.dto.ContaTestDTO;
 import com.bank.bank.exceptions.ListaVaziaException;
 import com.bank.bank.exceptions.ValorNaoExisteException;
 import com.bank.bank.models.*;
@@ -60,24 +61,24 @@ public class ContaServiceImpl implements ContaService {
         Cliente cliente = clienteService.getById(contaRequestDTO.idCliente());
         Agencias agencias = agenciaService.getById(contaRequestDTO.idAgencia());
         //ATENÇÃO, incongruencia ao tentar adicionar idAgencias para clientes que já possuem seus estados cadastrados
-        if (contasGet == null){
+        if (contasGet == null) {
             throw new ValorNaoExisteException();
         }
-            if (contasGet != null) {
-                contasGet.setNumero(contaRequestDTO.numero());
-                contasGet.setCliente(cliente);
-                contasGet.setSaldo(contaRequestDTO.saldo());
-                contasGet.setAgencias(agencias);
+        if (contasGet != null) {
+            contasGet.setNumero(contaRequestDTO.numero());
+            contasGet.setCliente(cliente);
+            contasGet.setSaldo(contaRequestDTO.saldo());
+            contasGet.setAgencias(agencias);
 
-                contaRepository.save(contasGet);
-            }
+            contaRepository.save(contasGet);
+        }
     }
 
     //
     @Override
     public ContaResponseDTO getById(Long id) {
         Optional<Contas> contas = contaRepository.findById(id);
-        if (contas.isEmpty()){
+        if (contas.isEmpty()) {
             throw new ValorNaoExisteException();
         }
         if (contas.isPresent()) {
@@ -126,7 +127,7 @@ public class ContaServiceImpl implements ContaService {
         // Object recebe quaisquer valores
         List<Object[]> lista = contaRepository.getContaValue(clienteId);
         //Na lista de arrays, o primeiro index da lista contem um bloco de arrays vetoriais, que são uma lista propria
-        if (lista == null){
+        if (lista == null) {
             throw new ValorNaoExisteException();
         }
         if (lista != null) {
@@ -180,6 +181,18 @@ public class ContaServiceImpl implements ContaService {
             return listReturn;
         }
         return null;
+    }
+
+    @Override
+    public List<ContaTestDTO> getContaType(Long clienteId) {
+
+        List<Contas> listContas = contaRepository.getContaType(clienteId);
+        List<ContaTestDTO> list = new ArrayList<>();
+        for (Contas c : listContas) {
+            list.add(new ContaTestDTO(c.getId(),c.getSaldo(),c.getNumero(),c.getAgencias(),c.getCliente()));
+        }
+
+        return list;
     }
 
 

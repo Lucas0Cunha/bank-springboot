@@ -4,7 +4,10 @@ import com.bank.bank.dto.ContaRequestDTO;
 import com.bank.bank.dto.ContaResponseAgenciaDTO;
 import com.bank.bank.dto.ContaResponseDTO;
 
+import com.bank.bank.dto.ContaTestDTO;
+import com.bank.bank.models.Contas;
 import jakarta.transaction.Transactional;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -31,4 +34,6 @@ public interface ContaService {
     List<ContaResponseDTO> getContaValueAll();
 
     List<ContaResponseAgenciaDTO> getContasByAgencia(Long agenciaId);
+
+    List<ContaTestDTO> getContaType(Long clienteId);
 }

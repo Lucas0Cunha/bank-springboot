@@ -33,7 +33,8 @@ public class Configurations {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/register").permitAll()
-                        //TODO TESTAR
+                        .requestMatchers(HttpMethod.POST, "/agencia").permitAll()
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(tokenfilter, UsernamePasswordAuthenticationFilter.class)
@@ -51,7 +52,15 @@ public class Configurations {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public TokenService tokenService() {
+        return new TokenService();
+}
 
+    @Bean
+    public FilterToken filterToken() {
+        return new FilterToken();
+    }
 
 
 }

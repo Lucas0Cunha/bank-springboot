@@ -2,6 +2,9 @@ package com.bank.bank.repository;
 
 import com.bank.bank.dto.AgenciaTestDTO;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.bank.bank.models.Agencias;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
@@ -25,21 +28,20 @@ class AgenciasDAOTest {
     @Autowired
     AgenciasDAO agenciasrepository;
 
-    private Agencias createAgencia(AgenciaTestDTO agenciaTestDTO){
-    Agencias newAgencia = new Agencias();
-    this.entityManager.persist(newAgencia);
-    return newAgencia;
-    }
-
 
     @Test
     @DisplayName("Should return successfully from DB")
     void getAllNames() {
-        AgenciaTestDTO agenciaTestDTO = new AgenciaTestDTO(1L,"Bahia","Salvador");
-        this.createAgencia(agenciaTestDTO);
-        List<String> getAllNames = this.agenciasrepository.getAllNames();
+        Agencias agencias = new Agencias();
+        agencias.setNomeAgencia("efsef");
+        agencias.setEstado("efsef");
 
-        assertThat(getAllNames.isEmpty()).isFalse();
+        agenciasrepository.save(agencias);
+
+        List<String> allNames = agenciasrepository.getAllNames();
+
+        // Check that the list is not empty
+        assertFalse(allNames.isEmpty());
 
     }
 
@@ -47,11 +49,13 @@ class AgenciasDAOTest {
     @Test
     @DisplayName("Should not return successfully from DB")
     void getAllNames2() {
-        AgenciaTestDTO agenciaTestDTO = new AgenciaTestDTO(1L,"Bahia","Salvador");
+        Agencias agencias = new Agencias();
+        agencias.setNomeAgencia("efsef");
+        agencias.setEstado("efsef");
 
         List<String> getAllNames = this.agenciasrepository.getAllNames();
 
-        assertThat(getAllNames.isEmpty()).isTrue();
+        assertTrue(getAllNames.isEmpty());
 
     }
 }

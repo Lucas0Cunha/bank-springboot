@@ -18,13 +18,13 @@ public interface ClienteDAO extends JpaRepository<Cliente, Long> {
     List<String> getAllNames();
 
 
-    @Query (value = "SELECT cli.nome, a.nome_agencia, cli.estado FROM cliente cli INNER JOIN contas co ON  cli.id= co.id_cliente INNER JOIN agencia a ON co.id_agencia=a.id WHERE cli.id=:clienteId",nativeQuery = true)
+    @Query (value = "SELECT cli.nome, a.nome_agencia, cli.estado FROM cliente cli INNER JOIN contas co ON  cli.id= co.id_cliente INNER JOIN agencias a ON co.id_agencia=a.id WHERE cli.id=:clienteId",nativeQuery = true)
     List<Object[]> getInfoClienteConta(@Param("clienteId") Long idCliente);
 
     @Query(value = "SELECT cli.nome, co.tipo_conta FROM cliente cli INNER JOIN contas co ON  cli.id= co.id_cliente WHERE co.tipo_conta='contacredito'",nativeQuery = true)
     List<Object[]> getInfoClienteCredito();
 
 
-    @Query(value = "SELECT cli.nome AS Name,cli.estado AS CurrentAdress,a.estado AS AgencyLocal ,a.nome_agencia AS AgencyName FROM cliente cli INNER JOIN contas c ON cli.id= c.id_cliente INNER JOIN agencia a ON c.id_agencia= a.id WHERE cli.estado!=a.estado",nativeQuery = true)
+    @Query(value = "SELECT cli.nome AS Name,cli.estado AS CurrentAdress,a.estado AS AgencyLocal ,a.nome_agencia AS AgencyName FROM cliente cli INNER JOIN contas c ON cli.id= c.id_cliente INNER JOIN agencias a ON c.id_agencia= a.id WHERE cli.estado!=a.estado",nativeQuery = true)
     List<Object[]> getInfoClienteLocal();
 }
